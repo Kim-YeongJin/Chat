@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "540668961083",
+    "firebase_url": "https://pracchat0103.firebaseio.com",
+    "project_id": "pracchat0103",
+    "storage_bucket": "pracchat0103.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540668961083:android:04037f622f005db150d71e",
+        "android_client_info": {
+          "package_name": "com.music961.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540668961083-hn7simka0gf0n9mbuqpud56gn3kbl5r3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.music961.chat",
+            "certificate_hash": "39a907eafdb31d163980fe816ff6f8150da3b307"
+          }
+        },
+        {
+          "client_id": "540668961083-jvv5knfpblvid9tfkdpv1bqcm0e4sphq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcY_NxpSTkivdQgMZ-0p6U9H9u7UhJyIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540668961083-jvv5knfpblvid9tfkdpv1bqcm0e4sphq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
