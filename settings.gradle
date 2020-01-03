@@ -1,2 +1,2 @@
-include ':app', ':godhand(1.0.1)', ':MacheteSecurity(1.0.0)'
+include ':app'
 rootProject.name='Chat'
