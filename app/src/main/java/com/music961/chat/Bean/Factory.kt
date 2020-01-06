@@ -3,14 +3,19 @@ package com.music961.chat.Bean
 import android.os.Handler
 import android.util.Log
 import com.music961.chat.Network.ChatClient
+import java.net.SocketAddress
 
 val handlerHouse = HashMap<String, Handler>()
-val ChatRoom = HashMap<Int, Array<String>>()
+val ChatRoom = HashMap<String, SocketAddress>()
 
 
 val chClient = ChatClient()
 
-var myID = "temp"
+var youID = ""
+var myID = ""
+var item = ChatModel(
+    "", "", "example", ""
+)
 
 fun toWhat(str: String, arg: Int) {
     try {

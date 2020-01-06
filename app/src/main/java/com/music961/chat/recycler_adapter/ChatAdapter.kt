@@ -8,13 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.music961.chat.Bean.ChatModel
+import com.music961.chat.Bean.myID
 import com.music961.chat.R
 import kotlinx.android.synthetic.main.item_my_chat.view.*
 import kotlinx.android.synthetic.main.item_your_chat.view.*
 
 class ChatAdapter(val context: Context, val arrayList: ArrayList<ChatModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-
-    internal lateinit var preferences: SharedPreferences
 
     fun addItem(item: ChatModel) {//아이템 추가
         arrayList.add(item)
@@ -76,10 +75,9 @@ class ChatAdapter(val context: Context, val arrayList: ArrayList<ChatModel>) : R
     }
 
     override fun getItemViewType(position: Int): Int {//여기서 뷰타입을 1, 2로 바꿔서 지정해줘야 내채팅 너채팅을 바꾸면서 쌓을 수 있음
-        preferences = context.getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
 
         //내 아이디와 arraylist의 name이 같다면 내꺼 아니면 상대꺼
-        return if (arrayList.get(position).name == preferences.getString("name","").toString()) {
+        return if (arrayList.get(position).name == myID) {
             1
         } else {
             2

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.music961.chat.Bean.chClient
 import com.music961.chat.Bean.lo
+import com.music961.chat.Bean.myID
 import com.music961.chat.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
@@ -31,8 +32,6 @@ class MainActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
     private var googleSigninClient: GoogleSignInClient? = null
     private var firebaseAuth: FirebaseAuth? = null
-
-    internal lateinit var preferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,19 +55,6 @@ class MainActivity : AppCompatActivity() {
             }
             // 메인 쓰레드 UI 쓰레드 부분
         }
-
-        preferences = getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
-        val editor = preferences.edit()
-
-
-        //버튼을 클릭하면 입력한 이름을 쉐어드프리퍼런스에 내이름을 저장한다.
-        //또한 그 이름을 가지고 채팅방으로 이동한다.
-        enter.setOnClickListener{
-            editor.putString("name", yourId.text.toString())
-            val intent = Intent(this, ChatRoomActivity::class.java)
-            startActivity(intent)
-        }
-
 
     }
 
@@ -96,18 +82,19 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
                     val user = firebaseAuth?.currentUser
-                    Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
-                    firebaseAuth?.currentUser?.let {
+                    val temp = Intent(this@MainActivity, ChatListActivity::class.java)
 
-                        Log.d("로그", "이름 : ${user?.displayName}")
-                        Log.d("로그", "이메일 : ${user?.email}")
-                        Log.d("로그", "사진 : ${user?.photoUrl}")
-                        Log.d("로그", "이메일 유효성 : ${user?.isEmailVerified}")
-                        Log.d("로그", "uid : ${user?.uid}")
+                    myID = "${user?.email}"
 
-
+                    CoroutineScope(Dispatchers.Main).launch {
+                        // 메인 쓰레드 UI 쓰레드 부분
+                        withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                            //네트워크 쓰레드
+                            chClient.send(100, "${user?.email}")
+                        }
+                        // 메인 쓰레드 UI 쓰레드 부분
                     }
-
+                    startActivity(temp)
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()

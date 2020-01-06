@@ -1,13 +1,16 @@
 package com.music961.chat.Activity
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.music961.chat.Bean.ChatModel
-import com.music961.chat.Bean.chClient
-import com.music961.chat.Bean.myID
+import com.music961.chat.Bean.*
 import com.music961.chat.R
 import com.music961.yj_prac_1230.recycler_adapter.ChatAdapter
 import kotlinx.android.synthetic.main.activity_chat_room.*
@@ -20,7 +23,6 @@ import java.util.*
 
 class ChatRoomActivity : AppCompatActivity() {
 
-    internal lateinit var preferences: SharedPreferences
     var arrayList = arrayListOf<ChatModel>()
     val mAdapter =
         ChatAdapter(this, arrayList)
@@ -29,7 +31,8 @@ class ChatRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
-        preferences = getSharedPreferences("USERSIGN", Context.MODE_PRIVATE)
+
+        handlerInit()
 
         //어댑터 선언
         chat_recyclerview.adapter = mAdapter
@@ -54,8 +57,8 @@ class ChatRoomActivity : AppCompatActivity() {
         var Txt = chating_Text.text.toString()
 
         //example에는 원래는 이미지 url이 들어가야할 자리
-        val item = ChatModel(
-            preferences.getString("name", "").toString(), Txt, "example", getTime
+        item = ChatModel(
+            myID, Txt, "example", getTime
         )
         mAdapter.addItem(item)
         mAdapter.notifyDataSetChanged()
@@ -65,7 +68,7 @@ class ChatRoomActivity : AppCompatActivity() {
             // 메인 쓰레드 UI 쓰레드 부분
             withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
                 //네트워크 쓰레드
-                chClient.send(300, myID, Txt)
+                chClient.send(300, myID, youID, Txt)
             }
             // 메인 쓰레드 UI 쓰레드 부분
         }
@@ -73,4 +76,20 @@ class ChatRoomActivity : AppCompatActivity() {
         chating_Text.setText("")
     }
 
+    private fun handlerInit(){
+        handlerHouse["chat"] = @SuppressLint("HandlerLeak")
+        object : Handler() {
+            override fun handleMessage(msg: Message?) {
+                super.handleMessage(msg!!)
+                when (msg.what) {
+                    10->{
+                        mAdapter.addItem(item)
+                        mAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+    }
 }
+
+
