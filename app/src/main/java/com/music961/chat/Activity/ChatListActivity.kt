@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Message
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.music961.chat.Bean.chClient
 import com.music961.chat.Bean.handlerHouse
 import com.music961.chat.Bean.myID
@@ -49,6 +50,11 @@ class ChatListActivity : AppCompatActivity() {
         chatting_list_recycler.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter = ChatListAdapter()
+        }
+        //로그아웃 버튼
+        logout_button.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            finish()
         }
     }
 

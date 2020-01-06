@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             // 메인 쓰레드 UI 쓰레드 부분
         }
 
+
     }
 
     //구글 로그인 api
