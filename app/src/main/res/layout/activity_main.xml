@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Activity.MainActivity" >
+    tools:context=".Activity.MainActivity">
 
     <TextView
         android:id="@+id/text"
@@ -13,7 +12,6 @@
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:layout_centerInParent="true" />
-
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleLoginBtn"
         android:layout_width="wrap_content"
@@ -21,5 +19,25 @@
         android:layout_centerInParent="true"
         android:layout_below="@+id/text">
     </com.google.android.gms.common.SignInButton>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/yourId"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            />
+
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="입력" />
+    </LinearLayout>
 
 </RelativeLayout>

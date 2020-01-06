@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.music961.chat.Bean.chClient
 import com.music961.chat.Bean.handlerHouse
 import com.music961.chat.Bean.myID
 import com.music961.chat.Bean.youID
 import com.music961.chat.R
+import com.music961.chat.recycler_adapter.ChatListAdapter
 import kotlinx.android.synthetic.main.activity_chat_list.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +43,12 @@ class ChatListActivity : AppCompatActivity() {
                 }
                 // 메인 쓰레드 UI 쓰레드 부분
             }
+        }
+
+        //채팅 리스트 리사이클러
+        chatting_list_recycler.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            adapter = ChatListAdapter()
         }
     }
 
