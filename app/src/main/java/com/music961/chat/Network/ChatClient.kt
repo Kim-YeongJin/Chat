@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ChatClient : GodHand("192.168.1.105" , 3000 , 10240, 10240) {
+class ChatClient : GodHand("192.168.1.108" , 3000 , 10240, 10240) {
 
 
     override fun appEnd() {

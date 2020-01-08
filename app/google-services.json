@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "540668961083-pu77sqbcuoth5t1i2n854kg4r0bs4gvh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.music961.chat",
+            "certificate_hash": "9cee737257decaff13cceb0a2ad3b67a83f23ee9"
+          }
+        },
+        {
+          "client_id": "540668961083-43ejk8t4m016v3achvejhbhuhr98tp71.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.music961.chat",
+            "certificate_hash": "ce96286ece1b4889b6d23395047fd5a7b519aeaa"
+          }
+        },
+        {
           "client_id": "540668961083-hn7simka0gf0n9mbuqpud56gn3kbl5r3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

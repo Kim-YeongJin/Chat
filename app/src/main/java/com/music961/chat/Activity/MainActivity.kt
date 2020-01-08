@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         googleLoginBtn.setOnClickListener {
             val signinIntent = googleSigninClient?.signInIntent
             startActivityForResult(signinIntent, RC_SIGN_IN)
+
         }
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
                     val user = firebaseAuth?.currentUser
-
+                    lo("이메일 ${firebaseAuth?.currentUser?.email}")
                     myID = "${user?.email}"
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
+                    lo("로그인 실패")
                 }
             }
     }

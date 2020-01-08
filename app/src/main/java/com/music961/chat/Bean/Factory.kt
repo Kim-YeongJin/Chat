@@ -42,3 +42,7 @@ fun toWhatObj(str: String, arg: Int, ob: Any) {
 fun print(str: Any){
     System.out.println(str)
 }
+
+fun lo(str:String){
+    Log.d("로그",str)
+}
