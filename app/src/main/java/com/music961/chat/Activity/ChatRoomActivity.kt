@@ -1,14 +1,11 @@
 package com.music961.chat.Activity
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.music961.chat.Bean.*
 import com.music961.chat.R
@@ -24,8 +21,7 @@ import java.util.*
 class ChatRoomActivity : AppCompatActivity() {
 
     var arrayList = arrayListOf<ChatModel>()
-    val mAdapter =
-        ChatAdapter(this, arrayList)
+    val mAdapter = ChatAdapter(this, arrayList)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +29,17 @@ class ChatRoomActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat_room)
 
         handlerInit()
+
+        if(youID == "채팅방") {
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 쓰레드 UI 쓰레드 부분
+                withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                    //네트워크 쓰레드
+                    chClient.send(600, myID)
+                }
+                // 메인 쓰레드 UI 쓰레드 부분
+            }
+        }
 
         //어댑터 선언
         chat_recyclerview.adapter = mAdapter
@@ -54,7 +61,7 @@ class ChatRoomActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
 
         val getTime = sdf.format(date)
-        var Txt = chating_Text.text.toString()
+        val Txt = chating_Text.text.toString()
 
         //example에는 원래는 이미지 url이 들어가야할 자리
         item = ChatModel(
@@ -63,14 +70,25 @@ class ChatRoomActivity : AppCompatActivity() {
         mAdapter.addItem(item)
         mAdapter.notifyDataSetChanged()
 
-
-        CoroutineScope(Dispatchers.Main).launch {
-            // 메인 쓰레드 UI 쓰레드 부분
-            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-                //네트워크 쓰레드
-                chClient.send(300, myID, youID, Txt)
+        if(youID == "채팅방") {
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 쓰레드 UI 쓰레드 부분
+                withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                    //네트워크 쓰레드
+                    chClient.send(603, myID, Txt)
+                }
+                // 메인 쓰레드 UI 쓰레드 부분
             }
-            // 메인 쓰레드 UI 쓰레드 부분
+        }
+        else {
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 쓰레드 UI 쓰레드 부분
+                withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                    //네트워크 쓰레드
+                    chClient.send(300, myID, youID, Txt)
+                }
+                // 메인 쓰레드 UI 쓰레드 부분
+            }
         }
         //채팅 입력창 초기화
         chating_Text.setText("")
@@ -83,12 +101,29 @@ class ChatRoomActivity : AppCompatActivity() {
                 super.handleMessage(msg!!)
                 when (msg.what) {
                     10->{
-                        mAdapter.addItem(item)
-                        mAdapter.notifyDataSetChanged()
+                        if(item.name != myID) {
+                            mAdapter.addItem(item)
+                            mAdapter.notifyDataSetChanged()
+                        }
                     }
+
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if(youID == "채팅방") {
+            CoroutineScope(Dispatchers.Main).launch {
+                // 메인 쓰레드 UI 쓰레드 부분
+                withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                    //네트워크 쓰레드
+                    chClient.send(602, myID)
+                }
+                // 메인 쓰레드 UI 쓰레드 부분
+            }
+        }
+        super.onBackPressed()
     }
 }
 

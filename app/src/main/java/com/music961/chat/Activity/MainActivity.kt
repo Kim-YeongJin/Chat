@@ -1,10 +1,10 @@
 package com.music961.chat.Activity
 
-import android.app.Activity
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.music961.chat.Bean.chClient
-import com.music961.chat.Bean.lo
-import com.music961.chat.Bean.myID
+import com.music961.chat.Bean.*
 import com.music961.chat.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        handlerInit()
+
         //구글 로그인 api
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             val signinIntent = googleSigninClient?.signInIntent
             startActivityForResult(signinIntent, RC_SIGN_IN)
         }
-        //영진이 형
+
         CoroutineScope(Dispatchers.Main).launch {
             // 메인 쓰레드 UI 쓰레드 부분
             withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity() {
             }
             // 메인 쓰레드 UI 쓰레드 부분
         }
-
-
     }
 
     //구글 로그인 api
@@ -83,7 +81,6 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this){
                 if(it.isSuccessful){
                     val user = firebaseAuth?.currentUser
-                    val temp = Intent(this@MainActivity, ChatListActivity::class.java)
 
                     myID = "${user?.email}"
 
@@ -91,15 +88,41 @@ class MainActivity : AppCompatActivity() {
                         // 메인 쓰레드 UI 쓰레드 부분
                         withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
                             //네트워크 쓰레드
-                            chClient.send(100, "${user?.email}")
+                            chClient.send(10)
                         }
                         // 메인 쓰레드 UI 쓰레드 부분
                     }
-                    startActivity(temp)
                 }
                 else{
                     Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun handlerInit(){
+        handlerHouse["login"] = @SuppressLint("HandlerLeak")
+        object : Handler() {
+            override fun handleMessage(msg: Message?) {
+                super.handleMessage(msg!!)
+                when (msg.what) {
+                    10->{
+                        CoroutineScope(Dispatchers.Main).launch {
+                            // 메인 쓰레드 UI 쓰레드 부분
+                            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                                //네트워크 쓰레드
+                                Log.d("로그","보내는 키 ${cl_rsa.enc(myID)}")
+                                chClient.send(100, cl_rsa.enc(myID))
+                            }
+                            // 메인 쓰레드 UI 쓰레드 부분
+                        }
+                    }
+                    11 -> {
+                        val temp = Intent(this@MainActivity, ChatListActivity::class.java)
+                        startActivity(temp)
+                    }
+
+                }
+            }
+        }
     }
 }

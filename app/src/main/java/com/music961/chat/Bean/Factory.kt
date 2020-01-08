@@ -1,20 +1,27 @@
 package com.music961.chat.Bean
 
+import MctSecRSA_CL
 import android.os.Handler
 import android.util.Log
 import com.music961.chat.Network.ChatClient
-import java.net.SocketAddress
+import java.security.PublicKey
 
 val handlerHouse = HashMap<String, Handler>()
-val ChatRoom = HashMap<String, SocketAddress>()
 
 
 val chClient = ChatClient()
+
+lateinit var sv_publkey : PublicKey
+
+lateinit var cl_rsa : MctSecRSA_CL
 
 var youID = ""
 var myID = ""
 var item = ChatModel(
     "", "", "example", ""
+)
+var room = ChatRoomInfo (
+    0, ""
 )
 
 fun toWhat(str: String, arg: Int) {
@@ -32,6 +39,6 @@ fun toWhatObj(str: String, arg: Int, ob: Any) {
     } catch (e: NoSuchElementException) { }
 }
 
-fun lo(str:String){
-    Log.d("로그",str)
+fun print(str: Any){
+    System.out.println(str)
 }

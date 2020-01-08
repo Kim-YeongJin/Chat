@@ -43,7 +43,8 @@ dependencies {
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1' // 코루틴
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation files('src/main/java/com/music961/chat/jar/godhand (1.0.6).jar')
+    implementation project(path: ':godhand(1.0.0)')
+    //implementation project(':Godhand(1.0.0)')
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,7 +1,6 @@
 package com.music961.yj_prac_1230.recycler_adapter
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +54,6 @@ class ChatAdapter(val context: Context, val arrayList: ArrayList<ChatModel>) : R
             v.chat_Text2.gravity = Gravity.LEFT
             v.chat_Time2.gravity = Gravity.LEFT
         }
-
     }
 
     //내가친 채팅 뷰홀더
